@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.0//EN"
+          "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+
+
+<struts-config>
+
+  <!-- ========== Configuraciones de Data Source ============================== -->
+
+  <!-- ========== Definiciones de Form Bean =================================== -->
+  <form-beans>
+     
+    <form-bean  name="CargarPeliculaForm" type="struts.forms.CargarPeliculaForm" />
+	<form-bean  name="ShowPeliculasForm" type="struts.forms.ShowPeliculasForm" />
+	<form-bean  name="BuscarPeliculaForm" type="struts.forms.BuscarPeliculaForm" /> 
+	<form-bean  name="LoginForm" type="struts.forms.LoginForm" />
+	<form-bean  name="ResultadosForm" type="struts.forms.ResultadosForm" />
+	<form-bean  name="DeleteForm" type="struts.forms.DeleteForm" />
+	
+  </form-beans>
+
+  <!-- ========== Definiciones de Global Forward ============================== -->
+  <global-forwards>
+    <forward	name="Menu"				path="/index.jsp"/>
+  </global-forwards>
+
+
+  <!-- ========== Definiciones de Action Mapping ============================== -->
+ 
+  <action-mappings>
+	
+	<action   path="/BuscarActoresYDirectores" type="struts.actions.BuscarActoresYDirectoresAction" name="ResultadosForm"
+              scope="request" validate="false">
+              <forward name="success" path="/resultados.jsp"/>
+			  <forward name="failure" path="/error.jsp"/>
+    </action>
+    
+    <action   path="/Buscar" type="struts.actions.BuscarAction" name="BuscarPeliculaForm"
+              scope="request" validate="false">
+              <forward name="actoresydirectores" path="/resultados.jsp"/>
+              <forward name="pelicula" path="/peliculas.jsp"/>
+			  <forward name="failure" path="/error.jsp"/>
+    </action>
+    
+    <action   path="/Delete" type="struts.actions.DeleteAction" name="DeleteForm"
+              scope="request" validate="false">
+              <forward name="success" path="/backoffice/index.jsp"/>
+			  <forward name="failure" path="/error.jsp"/>
+    </action>
+
+    <action   path="/CargarPelicula" type="struts.actions.CargarPeliculaAction" name="CargarPeliculaForm"
+              scope="request" validate="false">
+              <forward name="success" path="/backoffice/indexbackoffice.jsp"/>
+			  <forward name="failure" path="/error.jsp"/>
+    </action>
+    
+    <action   path="/ShowPeliculas" type="struts.actions.ShowPeliculasAction" name="ShowPeliculasForm"
+              scope="request" validate="false">
+              <forward name="success" path="/backoffice/verpeliculas.jsp"/>
+			  <forward name="failure" path="/error.jsp"/>
+    </action>
+    
+    <action   path="/BuscarPelicula" type="struts.actions.BuscarPeliculaAction" name="BuscarPeliculaForm"
+              scope="request" validate="false">
+              <forward name="success" path="/peliculas.jsp"/>
+			  <forward name="failure" path="/error.jsp"/>
+    </action>
+    
+    <action   path="/Login" type="struts.actions.LoginAction" name="LoginForm"
+              scope="request" validate="false">
+              <forward name="success" path="/backoffice/indexbackoffice.jsp"/>
+			  <forward name="failure" path="/backoffice/index.jsp"/>
+    </action>
+    
+  </action-mappings>
+  
+  <message-resources parameter="resources.application" />
+
+</struts-config>
