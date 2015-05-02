@@ -1,0 +1,176 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ice="http://www.icesoft.com/icefaces/component"
+                template="layout/template.xhtml">
+
+<ui:define name="body">
+	<h:form id="form_edit_miembro"> 
+	  <ice:panelTabSet>
+	  	<ice:panelTab label="Datos basicos">
+	  		<ice:panelGrid id="loginPanelGridId" columns="2" rowClasses="prop" columnClasses="name,value">
+	            <h:outputLabel for="nombre">Nombre</h:outputLabel>
+	            <ice:inputText id="nombre" required="true" value="#{miembrosDisplay.miembro.nombre}"/>
+	            <h:outputLabel for="apellido">Apellido</h:outputLabel>
+	            <ice:inputText id="apellido" required="true" value="#{miembrosDisplay.miembro.apellido}"/>
+	            <h:outputLabel for="email">Email</h:outputLabel>
+	            <ice:inputText id="email" required="true" value="#{miembrosDisplay.miembro.email}"/>
+	            <h:outputLabel for="sexo">Sexo</h:outputLabel>
+			    <ice:selectOneMenu id="sexo"  partialSubmit="true" valueChangeListener="#{miembrosDisplay.selectSexo}"  value="#{miembrosDisplay.miembro.sexo.id}" >
+			    	<f:selectItems value="#{listSexo}"/>
+			    </ice:selectOneMenu>
+			    <h:outputLabel for="test">Estado Civil</h:outputLabel>
+			    <ice:selectOneMenu id="estadoCivil" name="estadoCivil" value="#{miembrosDisplay.miembro.estadoCivil.id}">
+			    	<f:selectItems value="#{listEstadosCiviles}"/>
+			    </ice:selectOneMenu>
+
+			    <h:outputLabel for="fecha">Fecha de Nacimiento</h:outputLabel>
+		     	<ice:selectInputDate id="fecha"  required="true" popupDateFormat="dd/MM/yyyy" renderAsPopup="true"  value="#{miembrosDisplay.miembro.fechaNacimiento}" >
+			     	<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-3" />
+		     	</ice:selectInputDate>
+		     	<h:outputLabel for="edad">Edad</h:outputLabel>
+		     	<h:outputLabel value="#{miembrosDisplay.miembro.edad}"></h:outputLabel>
+
+			    <h:outputLabel>DOMICILIO</h:outputLabel>
+			    <h:outputLabel>&nbsp;</h:outputLabel>
+			    <h:outputLabel for="provincia">Provincia</h:outputLabel>
+			    <ice:selectOneMenu id="provincia"  partialSubmit="true" valueChangeListener="#{miembrosDisplay.selectProvincia}" onchange="submit();" value="#{miembrosDisplay.miembro.provincia.id}" >
+			    	<f:selectItems value="#{listProvincia}"/>
+			    </ice:selectOneMenu>
+			    
+			    <h:outputLabel for="localidad">Localidad</h:outputLabel>
+		     	<ice:selectOneMenu id="localidad" partialSubmit="true" onchange="submit();"  valueChangeListener="#{miembrosDisplay.selectLocalidad}" value="#{miembrosDisplay.miembro.localidad.id}">
+					<f:selectItems value="#{miembrosDisplay.localidades}"/>
+				</ice:selectOneMenu>
+			   
+			   	<h:outputLabel for="codPost">Cod. Post</h:outputLabel>
+		     	<h:outputLabel value="#{miembrosDisplay.miembro.codPostal}"></h:outputLabel>
+			    
+			    <h:outputLabel for="calle">Calle</h:outputLabel>
+	            <ice:inputText id="calle" required="true" value="#{miembrosDisplay.miembro.calle}"/>
+
+			    <h:outputLabel for="altura">Altura</h:outputLabel>
+	            <ice:inputText id="altura" required="true" value="#{miembrosDisplay.miembro.altura}"/>
+
+			    <h:outputLabel for="piso">Piso</h:outputLabel>
+	            <ice:inputText id="piso" required="false" value="#{miembrosDisplay.miembro.piso}"/>
+
+			    <h:outputLabel for="dto">Dto</h:outputLabel>
+	            <ice:inputText id="dto" required="false" value="#{miembrosDisplay.miembro.dto}"/>
+		     	
+	      </ice:panelGrid>
+	  	</ice:panelTab>
+	  	<ice:panelTab label="Datos adicionales">
+	  		<ice:panelGrid id="datosAdicionalesPanelGridId" columns="2" rowClasses="prop" columnClasses="name,value">
+		  		
+		  		<h:outputLabel for="cabezaFlia">Cabeza de familia</h:outputLabel>
+		  		<ice:selectBooleanCheckbox id="cabezaFlia" value="#{miembrosDisplay.miembro.cabezaDeFamilia}"></ice:selectBooleanCheckbox>
+		  		
+		  		<h:outputLabel for="activo">Activo</h:outputLabel>
+		  		<ice:selectBooleanCheckbox id="activo" value="#{miembrosDisplay.miembro.activo}"></ice:selectBooleanCheckbox>
+		  		
+		  		<h:outputLabel for="jerarquia">Jerarquia</h:outputLabel>
+	            <ice:inputText id="jerarquia" required="true" value="#{miembrosDisplay.miembro.jerarquia}"/>
+
+		  		<h:outputLabel for="seguimiento">Seguimiento</h:outputLabel>
+		  		<ice:selectBooleanCheckbox id="seguimiento" value="#{miembrosDisplay.miembro.seguimiento}"></ice:selectBooleanCheckbox>
+		  		
+		  		<h:outputLabel for="fechaUnion">Fecha de union a la iglesia</h:outputLabel>
+		  		<ice:selectInputDate id="fechaUnion"  popupDateFormat="dd/MM/yyyy" renderAsPopup="true"  value="#{miembrosDisplay.miembro.fechaUnionIglesia}" >
+			     	<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-3" />
+		     	</ice:selectInputDate>
+		     	
+		     	<h:outputLabel>CURSOS</h:outputLabel>
+		     	<h:outputLabel>&nbsp;</h:outputLabel>
+		     	<ice:panelGroup>
+		     		<ice:dataTable id="tablaCursos" var="c" rows="4" value="#{miembrosDisplay.miembro.educacionCristiana}" style="width:600px;" rendered="#{miembrosDisplay.miembro.educacionCristiana.size()>0}">
+					    <ice:column>
+							<f:facet name="header">Nombre</f:facet>
+							#{c.nombreCurso}
+					    </ice:column>
+					    <ice:column>
+							<f:facet name="header">Fecha de inicio</f:facet>
+							#{c.fechaInicio}
+					    </ice:column>
+					    <ice:column>
+							<f:facet name="header">Fecha de fin</f:facet>
+							#{c.fechaFin}
+					    </ice:column>
+					    <ice:column>
+					    	<f:facet name="header">Operación</f:facet>
+						    <h:commandLink id="borrarCurso" action="#{miembrosDisplay.borrarCurso(c)}" value="Eliminar"/>
+					    </ice:column>
+					</ice:dataTable>
+					<br/>
+					 <h:outputLabel for="nombreCursoTxt">Nombre del curso: </h:outputLabel><br/>
+					 <ice:inputText id="nombreCursoTxt"/><br/>
+					 <h:outputLabel for="fechaInicioCurso">Fecha de inicio: </h:outputLabel>
+					 <ice:selectInputDate id="fechaInicioCurso"  popupDateFormat="dd/MM/yyyy" renderAsPopup="true">
+				     	<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-3" />
+			     	</ice:selectInputDate>
+			     	<h:outputLabel for="fechaFinCurso">Fecha de fin: </h:outputLabel>
+			     	<ice:selectInputDate id="fechaFinCurso"  popupDateFormat="dd/MM/yyyy" renderAsPopup="true" >
+				     	<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-3" />
+			     	</ice:selectInputDate>
+					<h:commandLink action="#{miembrosDisplay.agregarCurso()}" value="Agregar">
+				 		<f:param name="nombreCurso" value="test"></f:param>
+				 	</h:commandLink>
+		     	</ice:panelGroup>
+		     
+		  	</ice:panelGrid>
+	  	</ice:panelTab>
+	  	<ice:panelTab label="Datos laborales">
+	  		<ice:panelGrid id="datosLaboralesPanelGridId" columns="2" rowClasses="prop" columnClasses="name,value">
+				<h:outputLabel for="nombreEmpresa">Nombre</h:outputLabel>
+	            <ice:inputText id="nombreEmpresa" value="#{miembrosDisplay.miembro.nombreEmpresa}"/>
+				
+	  			<h:outputLabel for="provinciaEmpresa">Provincia</h:outputLabel>
+			    <ice:selectOneMenu id="provinciaEmpresa"  partialSubmit="true" valueChangeListener="#{miembrosDisplay.selectProvinciaEmpresa}" onchange="submit();" value="#{miembrosDisplay.miembro.provinciaEmpresa.id}" >
+			    	<f:selectItems value="#{listProvincia}"/>
+			    </ice:selectOneMenu>
+			    
+			    <h:outputLabel for="localidadEmpresa">Localidad</h:outputLabel>
+		     	<ice:selectOneMenu id="localidadEmpresa" partialSubmit="true" onchange="submit();" valueChangeListener="#{miembrosDisplay.selectLocalidadEmpresa}" value="#{miembrosDisplay.miembro.localidadEmpresa.id}">
+					<f:selectItems value="#{miembrosDisplay.localidadesEmpresa}"/>
+				</ice:selectOneMenu>
+			   
+			   	<h:outputLabel for="codPostEmpresa">Cod. Post</h:outputLabel>
+		     	<h:outputLabel id="codPostEmpresa" value="#{miembrosDisplay.miembro.codPostalEmpresa}"></h:outputLabel>
+			    
+			    <h:outputLabel for="calleEmpresa">Calle</h:outputLabel>
+	            <ice:inputText id="calleEmpresa" value="#{miembrosDisplay.miembro.calleEmpresa}"/>
+
+			    <h:outputLabel for="alturaEmpresa">Altura</h:outputLabel>
+	            <ice:inputText id="alturaEmpresa" value="#{miembrosDisplay.miembro.alturaEmpresa}"/>
+
+			    <h:outputLabel for="pisoEmpresa">Piso</h:outputLabel>
+	            <ice:inputText id="pisoEmpresa" value="#{miembrosDisplay.miembro.pisoEmpresa}"/>
+
+			    <h:outputLabel for="dtoEmpresa">Dto</h:outputLabel>
+	            <ice:inputText id="dtoEmpresa" value="#{miembrosDisplay.miembro.dtoEmpresa}"/>
+	            
+	            <h:outputLabel for="emailEmpresa">Email</h:outputLabel>
+	            <ice:inputText id="emailEmpresa" value="#{miembrosDisplay.miembro.emailEmpresa}"/>
+			
+				<h:outputLabel for="telEmpresa">Tel</h:outputLabel>
+	            <ice:inputText id="telEmpresa" value="#{miembrosDisplay.miembro.telefonoFijoEmpresa}"/>
+				
+				<h:outputLabel for="internoEmpresa">Interno</h:outputLabel>
+	            <ice:inputText id="internoEmpresa" value="#{miembrosDisplay.miembro.internoEmpresa}"/>
+				
+				<h:outputLabel for="telAltEmpresa">Tel. Alternativo/Fax</h:outputLabel>
+	            <ice:inputText id="telAltEmpresa" value="#{miembrosDisplay.miembro.telAlternativoFax}"/>
+			</ice:panelGrid>
+	  	</ice:panelTab>
+	  </ice:panelTabSet>
+	  <div class="actionButtons">
+           <h:commandButton id="ok" value="Aceptar" action="#{miembrosDisplay.confirmEditMiembro}" view="/miembros.xhtml"/>
+           <h:commandButton id="cancel" value="Cancelar" action="#{miembrosDisplay.cancelEditMiembro}" view="/miembros.xhtml"/>
+      </div>
+	</h:form>
+</ui:define> 
+</ui:composition>
